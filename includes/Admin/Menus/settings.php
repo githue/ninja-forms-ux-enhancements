@@ -9,7 +9,7 @@ function options_page_html()
   ?>
   <div class="wrap nf-ux-enhancements">
     <h1>Ninja Forms UX Enhancements</h1>
-    <p>Minor customisations to improve your user experience with Ninja Forms.</p>
+    <p>Useful tweaks to improve your and your visitors' user experience with Ninja Forms.</p>
 
     <form action="options.php" method="post">
       <?php
@@ -44,6 +44,7 @@ function settings_init()
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_subs_back');
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_icons_css');
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_scrollbar');
+  register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_browser_save');
 
   add_settings_section(
     'nf_ux_enhancements_general',
@@ -53,14 +54,24 @@ function settings_init()
   );
 
   add_settings_field(
+    'browser_save_data',
+    'Browser auto-fill',
+    'browser_save_data_html',
+    'nf-ux-enhancements',
+    'nf_ux_enhancements_general',
+    array(
+      'id' => 'nf_ux_enhancements_browser_save'
+    )
+  );
+
+  add_settings_field(
     'sub_date_format',
     'Submission date display',
     'sub_date_format_html',
     'nf-ux-enhancements',
     'nf_ux_enhancements_general',
     array(
-      'id' => 'nf_ux_enhancements_sub_date_format',
-      'name' => 'sub_date_format'
+      'id' => 'nf_ux_enhancements_sub_date_format'
     )
   );
 
@@ -71,20 +82,7 @@ function settings_init()
     'nf-ux-enhancements',
     'nf_ux_enhancements_general',
     array(
-      'id' => 'nf_ux_enhancements_subs_back',
-      'name' => 'subs_back'
-    )
-  );
-
-  add_settings_field(
-    'icons_css',
-    'Dashicons stylesheet',
-    'block_icons_html',
-    'nf-ux-enhancements',
-    'nf_ux_enhancements_general',
-    array(
-      'id' => 'nf_ux_enhancements_icons_css',
-      'name' => 'icons_css'
+      'id' => 'nf_ux_enhancements_subs_back'
     )
   );
 
@@ -95,10 +93,37 @@ function settings_init()
     'nf-ux-enhancements',
     'nf_ux_enhancements_general',
     array(
-      'id' => 'nf_ux_enhancements_scrollbar',
-      'name' => 'scrollbar'
+      'id' => 'nf_ux_enhancements_scrollbar'
     )
   );
+
+  add_settings_field(
+    'icons_css',
+    'Dashicons stylesheet',
+    'block_icons_html',
+    'nf-ux-enhancements',
+    'nf_ux_enhancements_general',
+    array(
+      'id' => 'nf_ux_enhancements_icons_css'
+    )
+  );
+}
+
+function browser_save_data_html($args)
+{
+  $setting = get_option($args['id'], '1');
+  ?>
+  <label>
+    <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
+      <?php checked($setting, '1') ?> >
+    Let web browsers save the user's submitted data.</label>
+    <p class="description">
+      Warning: this feature hasn't been tested with any other Ninja Forms
+      extensions, like multi-part forms. If you experience any issues where
+      forms don't submit properly, try disabling this option.
+    </p>
+  <?php
+
 }
 
 function sub_date_format_html($args)
@@ -120,10 +145,19 @@ function subs_back_html($args)
   <label>
     <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
       <?php checked($setting, '1') ?> >
-    Add to submission edit page</label>
-    <p class="description">
-      Adds a button that takes you back to the submissions list of the current form.
-    </p>
+    Add 'All Submissions' button to submission edit page</label>
+  <?php
+
+}
+
+function scrollbar_html($args)
+{
+  $setting = get_option($args['id'], '1');
+  ?>
+  <label>
+    <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
+      <?php checked($setting, '1') ?> >
+    Show scrollbar in Ninja Forms dashboard</label>
   <?php
 
 }
@@ -143,18 +177,6 @@ function block_icons_html($args)
       By default Ninja Forms always loads admin-dashicons.css, which is only used for the
       rich text editor on specific fields.
     </p>
-  <?php
-
-}
-
-function scrollbar_html($args)
-{
-  $setting = get_option($args['id'], '1');
-  ?>
-  <label>
-    <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
-      <?php checked($setting, '1') ?> >
-    Show scrollbar in Ninja Forms dashboard</label>
   <?php
 
 }

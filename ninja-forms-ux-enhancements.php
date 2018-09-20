@@ -23,7 +23,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
    */
   final class NF_UXEnhancements
   {
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
     const SLUG = 'ux-enhancements';
     const NAME = 'UX Enhancements';
     const AUTHOR = 'Rowan';
@@ -82,29 +82,32 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 
     public function __construct()
     {
-      // add_action('admin_init', array($this, 'setup_license'));
-
       add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 
       $this->admin_settings('settings');
 
+      /**
+       * Initiate optional features.
+       */
       $override_date_format = get_option('nf_ux_enhancements_sub_date_format', '1');
-
       if ($override_date_format) {
         add_filter('nf_edit_sub_date_submitted', array($this, 'edit_sub_format_submitted_date'), 10);
         add_filter('nf_edit_sub_date_modified', array($this, 'edit_sub_format_modified_date'), 10);
       }
 
       $submissions_btn = get_option('nf_ux_enhancements_subs_back', '1');
-
       if ($submissions_btn) {
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
       }
 
       $show_scrollbar = get_option('nf_ux_enhancements_scrollbar', '1');
-
       if ($show_scrollbar) {
         add_filter('admin_body_class', array($this, 'add_body_class_scroll'));
+      }
+
+      $browser_save_data = get_option('nf_ux_enhancements_browser_save', '1');
+      if ($browser_save_data) {
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
       }
     }
 
@@ -112,6 +115,11 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
     {
       // Surrounding spaces are required.
       return ' nf-ux-enhancements-scroll ';
+    }
+
+    public function enqueue_scripts()
+    {
+      wp_enqueue_script('nf-ux-enhancements-public', self::$url . 'assets/js/public.js', array('nf-front-end'), self::VERSION, true);
     }
 
     public function enqueue_admin_scripts()
@@ -185,21 +193,6 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
     }
 
     /**
-     * Template
-     *
-     * @param string $file_name
-     * @param array $data
-     */
-    public static function template($file_name = '', array $data = array())
-    {
-      if (!$file_name) return;
-
-      extract($data);
-
-      include self::$dir . 'includes/Templates/' . $file_name;
-    }
-
-    /**
      * Config
      *
      * @param $file_name
@@ -208,16 +201,6 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
     public static function config($file_name)
     {
       return include self::$dir . 'includes/Config/' . $file_name . '.php';
-    }
-
-    /*
-     * Required methods for all extensions.
-     */
-    public function setup_license()
-    {
-      if (!class_exists('NF_Extension_Updater')) return;
-
-      new NF_Extension_Updater(self::NAME, self::VERSION, self::AUTHOR, __FILE__, self::SLUG);
     }
   }
 

@@ -3,6 +3,10 @@
   font-weight: 500;
 }
 
+.nf-ux-enhancements form {
+  max-width: 800px;
+}
+
 /* Reveal scrollbar in NinjaForms */
 .nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar { 
   display: block !important; background: #f1f1f1;
