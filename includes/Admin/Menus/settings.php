@@ -42,7 +42,6 @@ function settings_init()
 {
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_sub_date_format');
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_subs_back');
-  register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_icons_css');
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_scrollbar');
   register_setting('nf_ux_enhancements_general', 'nf_ux_enhancements_browser_save');
 
@@ -96,17 +95,6 @@ function settings_init()
       'id' => 'nf_ux_enhancements_scrollbar'
     )
   );
-
-  add_settings_field(
-    'icons_css',
-    'Dashicons stylesheet',
-    'block_icons_html',
-    'nf-ux-enhancements',
-    'nf_ux_enhancements_general',
-    array(
-      'id' => 'nf_ux_enhancements_icons_css'
-    )
-  );
 }
 
 function browser_save_data_html($args)
@@ -133,7 +121,7 @@ function sub_date_format_html($args)
   <label>
     <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
       <?php checked($setting, '1') ?> >
-    Use standard international date format</label>
+    Use international standard date format</label>
   <?php
 
 }
@@ -158,25 +146,6 @@ function scrollbar_html($args)
     <input type="checkbox" value="1" name="<?php echo $args['id'] ?>"
       <?php checked($setting, '1') ?> >
     Show scrollbar in Ninja Forms dashboard</label>
-  <?php
-
-}
-
-function block_icons_html($args)
-{
-  $setting = get_option($args['id'], '0');
-  ?>
-  <label>
-    <input type="checkbox" value="0" name="<?php echo $args['id'] ?>"
-      <?php checked($setting, '1') ?> >
-    Block Dashicons stylesheet on public site</label>
-    <p class="description">
-      Not yet implemented.
-    </p>
-    <p class="description">
-      By default Ninja Forms always loads admin-dashicons.css, which is only used for the
-      rich text editor on specific fields.
-    </p>
   <?php
 
 }

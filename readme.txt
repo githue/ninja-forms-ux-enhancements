@@ -1,6 +1,15 @@
-# UX Enhancements for Ninja Forms (Wordpress plugin)
+=== UX Enhancements for Ninja Forms 3 ===
+Contributors: githue
+tags: ux, usability, ninja forms
+Requires at least: 4.7
+Tested up to: 4.9
+Stable tag: trunk
 
-Add user experience enhancements to Ninja Forms 3 for Wordpress.
+Add user experience enhancements to the Ninja Forms 3 plugin.
+
+== Description ==
+
+Settings are found under Settings -> Ninja Forms UX.
 
 ## Options & Features
 

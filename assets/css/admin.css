@@ -8,14 +8,16 @@
 }
 
 /* Reveal scrollbar in NinjaForms */
-.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar { 
-  display: block !important; background: #f1f1f1;
+.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar {
+	display: block !important;
+	background: #f1f1f1;
 }
 
-.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar-button { 
+.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar-button {
   background: gray;
 }
 
-.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar-thumb { 
-  background: #c1c1c1; width: 16px;
+.nf-ux-enhancements-scroll.toplevel_page_ninja-forms::-webkit-scrollbar-thumb {
+	background: #c1c1c1;
+	width: 16px;
 }
