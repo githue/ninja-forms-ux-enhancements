@@ -5,7 +5,7 @@ Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: trunk
 
-Add user experience enhancements to the Ninja Forms 3 plugin.
+User experience enhancements for the Ninja Forms 3 plugin.
 
 == Description ==
 

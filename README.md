@@ -1,6 +1,6 @@
 # UX Enhancements for Ninja Forms (Wordpress plugin)
 
-Add user experience enhancements to Ninja Forms 3 for Wordpress.
+User experience enhancements for Ninja Forms 3 for Wordpress.
 
 ## Options & Features
 
