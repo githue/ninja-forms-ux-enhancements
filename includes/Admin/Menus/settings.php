@@ -56,7 +56,8 @@ class NF_UXEnhancements_Settings
 			'browser_save_data',
 			'sub_date_format',
 			'subs_back',
-			'scrollbar'
+			'scrollbar',
+			'css_layout'
 		);
 
 		foreach ($field_names as $field_id) {
@@ -95,6 +96,17 @@ class NF_UXEnhancements_Settings
 			'nf_ux_enhancements_general',
 			array(
 				'id' => 'browser_save_data'
+			)
+		);
+
+		add_settings_field(
+			'css_layout',
+			'Form layout',
+			array($this, 'css_layout_html'),
+			'nf-ux-enhancements',
+			'nf_ux_enhancements_general',
+			array(
+				'id' => 'css_layout'
 			)
 		);
 
@@ -145,6 +157,23 @@ class NF_UXEnhancements_Settings
 				Note: this feature hasn't been tested with any other Ninja Forms
 				extensions, like multi-part forms. If you experience any issues where
 				forms don't submit properly, try disabling this option.
+			</p>
+		<?php
+
+	}
+
+	public function css_layout_html($args)
+	{
+		$options = $this->options;
+		$setting = isset($options[$args['id']]) ? $options[$args['id']] : '1';
+		?>
+		<label>
+			<input type="checkbox" value="1" name="nf_ux_enhancements_admin[<?php echo $args['id'] ?>]"
+				<?php checked($setting, '1') ?> >
+			Move field's CSS classes to parent element</label>
+			<p class="description">
+				All the classes defined on a field's container element will be moved to the true container
+				<code style="white-space: nowrap;">&lt;nf-field&gt;</code>, giving you more control of the form layout.
 			</p>
 		<?php
 

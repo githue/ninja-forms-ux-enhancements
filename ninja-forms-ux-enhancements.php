@@ -19,7 +19,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 	 */
 	final class NF_UXEnhancements
 	{
-		const VERSION = '0.1.0';
+		const VERSION = '0.1.1';
 		const SLUG = 'ux-enhancements';
 		const NAME = 'UX Enhancements';
 		const AUTHOR = 'githue';
@@ -98,6 +98,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 			$submissions_btn = isset($setting['subs_back']) ? $setting['subs_back'] : '1';
 			$show_scrollbar = isset($setting['scrollbar']) ? $setting['scrollbar'] : '1';
 			$browser_save_data = isset($setting['browser_save_data']) ? $setting['browser_save_data'] : '1';
+			$css_layout = isset($setting['css_layout']) ? $setting['css_layout'] : '1';
 
 			if ($date_format === '1') {
 				add_filter('nf_edit_sub_date_submitted', array($this, 'edit_sub_format_submitted_date'), 10);
@@ -112,8 +113,9 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 				add_filter('admin_body_class', array($this, 'add_body_class_scroll'));
 			}
 
-			if ($browser_save_data === '1') {
-				add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+			// Check if any of the JS-dependant options are enabled.
+			if ($browser_save_data === '1' || $css_layout === '1') {
+				add_action('wp_enqueue_scripts', array($this, 'add_public_scripts'));
 			}
 		}
 
@@ -123,9 +125,26 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 			return ' nf-ux-enhancements-scroll ';
 		}
 
-		public function enqueue_scripts()
+		/**
+		 * Add an external script containing the JS logic, and an inline
+		 * script to provide the user-defined settings.
+		 */
+		public function add_public_scripts()
 		{
+			$setting = get_option('nf_ux_enhancements_admin');
+
+			$browser_save_data = isset($setting['browser_save_data']) ? $setting['browser_save_data'] : '1';
+			$css_layout = isset($setting['css_layout']) ? $setting['css_layout'] : '1';
+
+			$jsSettings = array(
+				'cssLayout' => $css_layout === '1' ? true : false,
+				'browserSaveData' => $browser_save_data === '1' ? true : false,
+			);
+
+			$jsSettingsJson = wp_json_encode($jsSettings);
+
 			wp_enqueue_script('nf-ux-enhancements-public', self::$url . 'assets/js/public.js', array('nf-front-end'), self::VERSION, true);
+			wp_add_inline_script('nf-ux-enhancements-public', "window.NF_UXEnhancements = $jsSettingsJson;", 'before');
 		}
 
 		public function enqueue_admin_scripts()
