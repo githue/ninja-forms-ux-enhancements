@@ -6,7 +6,7 @@
  * Plugin Name: UX Enhancements for Ninja Forms
  * Plugin URI:
  * Description: User experience enhancements for Ninja Forms 3 plugin.
- * Version: 3.0.0
+ * Version: 3.0.1
  * Author: githue
  * Text Domain: nf-ux-enhancements
  */
@@ -19,7 +19,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 	 */
 	final class NF_UXEnhancements
 	{
-		const VERSION = '0.1.2';
+		const VERSION = '3.0.1';
 		const SLUG = 'ux-enhancements';
 		const NAME = 'UX Enhancements';
 		const AUTHOR = 'githue';
