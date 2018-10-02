@@ -19,7 +19,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 	 */
 	final class NF_UXEnhancements
 	{
-		const VERSION = '0.1.1';
+		const VERSION = '0.1.2';
 		const SLUG = 'ux-enhancements';
 		const NAME = 'UX Enhancements';
 		const AUTHOR = 'githue';

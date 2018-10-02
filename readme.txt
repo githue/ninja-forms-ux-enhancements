@@ -37,6 +37,7 @@ Shows the scrollbar in the Ninja Forms dashboard.
 == Screenshots ==
 
 1. Easily style the form layout using CSS with the Form Layout option.
+2. Return to the submissions list without depending on the back button.
 
 == Configuration ==
 

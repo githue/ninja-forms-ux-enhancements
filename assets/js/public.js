@@ -75,11 +75,11 @@
 			for (var i = 0; i < fields.length; i++) {
 				var field = fields[i];
 
-				if (!field.hasOwnProperty('attributes')) return;
+				if (!field.hasOwnProperty('attributes')) continue;
 
 				var container_classes = field.attributes.container_class;
 
-				if (!container_classes.length) return;
+				if (!container_classes.length) continue;
 
 				var selector = 'nf-field-' + field.id + '-container';
 				var container = document.getElementById(selector);
