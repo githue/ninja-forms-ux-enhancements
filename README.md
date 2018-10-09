@@ -4,23 +4,47 @@ User experience enhancements for Ninja Forms 3 for Wordpress.
 
 ## Options & Features
 
-### 1. Let web browsers save submitted data
+This unofficial plugin for Ninja Forms provides user experience
+improvements for webmasters, designers and end-users.
 
-Ninja Forms doesn't add a submit listener to its forms so web browsers don't know when a Ninja Form has been submitted.
-This option fixes that problem; when someone submits one of your forms all their data will be saved in their web
-browser, this lets them use their browser's auto-fill feature. You can still specify fields that shouldn't be
-remembered through the Ninja Forms builder.
+Read on for the list of features.
 
-More information: https://groups.google.com/a/chromium.org/d/msg/chromium-discuss/Kt1K1PMrtJU/InNIeoIuBgAJ
+### Let web browsers remember user input
 
-### 2. Submission date display
+When a returning visitor uses one of your forms their browser will
+offer to automatically fill in the rest of the form (or the current
+field) using the same information they entered last time. This is
+especially useful for people using touch-screens.
 
-Display created and modified dates in standard international format when viewing/editing form submissions.
+*Intended for end-users*
 
-### 3. Return to submissions list
+[Technical explanation](https://groups.google.com/a/chromium.org/d/msg/chromium-discuss/Kt1K1PMrtJU/InNIeoIuBgAJ)
 
-Adds a button that takes you back to the submissions list on the submission edit page.
+### Form layout
 
-### 4. Scrollbar visibility
+All the classes defined on a field's container element are moved to the
+true container `<nf-field>`, giving you more control over the form
+layout. Useful for responsive Bootstrap layouts.
+
+*Intended for CSS authors*
+
+### Submission date display
+
+Display created and modified dates in standard international format
+when viewing/editing form submissions.
+
+*Intended for webmasters*
+
+### Return to submissions list
+
+Adds a button that takes you back to the submissions list on the
+submission edit page. Avoids unpredictable behavior with the back
+button.
+
+*Intended for webmasters*
+
+### Scrollbar visibility
 
 Shows the scrollbar in the Ninja Forms dashboard.
+
+*Intended for webmasters*

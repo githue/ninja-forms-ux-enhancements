@@ -1,6 +1,6 @@
 === UX Enhancements for Ninja Forms 3 ===
 Contributors: githue
-tags: ux, usability, ninja forms, ninjaforms, css, layout
+tags: ux, usability, ninja forms, ninjaforms, css, layout, autofill, auto-fill, autocomplete, forms
 Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: trunk
