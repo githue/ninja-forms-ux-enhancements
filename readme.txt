@@ -1,6 +1,6 @@
 === UX Enhancements for Ninja Forms 3 ===
 Contributors: githue
-tags: ux, usability, ninja forms, ninjaforms, css, layout, autofill, auto-fill, autocomplete, forms
+tags: ninja forms, layout, usability, accessibility, ux
 Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: trunk
@@ -14,10 +14,10 @@ improvements for webmasters, designers and end-users.
 
 Read on for the list of features.
 
-### Let web browsers remember user input
+### Let web browser remember user input for auto-fill
 
 When a returning visitor uses one of your forms their browser will
-offer to automatically fill in the rest of the form (or the current
+offer to automatically complete the rest of the form (or the current
 field) using the same information they entered last time. This is
 especially useful for people using touch-screens.
 
