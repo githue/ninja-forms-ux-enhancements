@@ -33,7 +33,7 @@ number pad by default.
 
 [Technical explanation](https://css-tricks.com/finger-friendly-numerical-inputs-with-inputmode/)
 
-*Intended for developers*
+*Intended for end-users*
 
 ### Form layout
 
