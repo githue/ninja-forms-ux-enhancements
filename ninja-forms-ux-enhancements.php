@@ -6,7 +6,7 @@
  * Plugin Name: UX Enhancements for Ninja Forms
  * Plugin URI:
  * Description: User experience enhancements for Ninja Forms 3 plugin.
- * Version: 3.0.1
+ * Version: 3.1.0
  * Author: githue
  * Text Domain: nf-ux-enhancements
  */
@@ -19,7 +19,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 	 */
 	final class NF_UXEnhancements
 	{
-		const VERSION = '3.0.1';
+		const VERSION = '3.1.0';
 		const SLUG = 'ux-enhancements';
 		const NAME = 'UX Enhancements';
 		const AUTHOR = 'githue';
@@ -99,6 +99,7 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 			$show_scrollbar = isset($setting['scrollbar']) ? $setting['scrollbar'] : '1';
 			$browser_save_data = isset($setting['browser_save_data']) ? $setting['browser_save_data'] : '1';
 			$css_layout = isset($setting['css_layout']) ? $setting['css_layout'] : '1';
+			$inputmode = isset($setting['inputmode']) ? $setting['inputmode'] : '0';
 
 			if ($date_format === '1') {
 				add_filter('nf_edit_sub_date_submitted', array($this, 'edit_sub_format_submitted_date'), 10);
@@ -117,6 +118,48 @@ if (version_compare(get_option('ninja_forms_version', '0.0.0'), '3', '<') || get
 			if ($browser_save_data === '1' || $css_layout === '1') {
 				add_action('wp_enqueue_scripts', array($this, 'add_public_scripts'));
 			}
+
+			if ($inputmode === '1') {
+				add_filter('ninja_forms_field_load_settings', array($this, 'add_field_setting_input_mode'));
+			}
+		}
+
+		public function add_field_setting_input_mode($settings)
+		{
+			// Only add the new fields if the field accepts a mask.
+			if (isset($settings['mask'])) {
+				$settings['nf_ux_enhancements_input_mode'] = array(
+					'name' => 'nf_ux_enhancements_input_mode',
+					'type' => 'select',
+					'label' => 'Input mode',
+					'width' => 'one-half',
+					'group' => 'restrictions',
+					'options' => array(
+            array(
+                'label' => __( 'Not specified', 'nf-ux-enhancements'),
+                'value' => '',
+            ),
+            array(
+                'label' => __( 'Numeric', 'nf-ux-enhancements' ),
+                'value' => 'numeric'
+            ),
+        ),
+					'value' => '',
+					'help' => __('Choose "Numeric" to suggest numbers in Google Chrome on touch screen devices.', 'nf-ux-enhancements'),
+				);
+
+				$settings['nf_ux_enhancements_pattern'] = array(
+					'name' => 'nf_ux_enhancements_pattern',
+					'type' => 'textbox',
+					'label' => 'Pattern',
+					'width' => 'one-half',
+					'group' => 'restrictions',
+					'value' => '',
+					'help' => __('Enter "[0-9]*" without quotes to suggest numbers in Safari on touch screen devices.', 'nf-ux-enhancements'),
+				);
+			}
+
+			return $settings;
 		}
 
 		public function add_body_class_scroll()

@@ -57,7 +57,8 @@ class NF_UXEnhancements_Settings
 			'sub_date_format',
 			'subs_back',
 			'scrollbar',
-			'css_layout'
+			'css_layout',
+			'inputmode',
 		);
 
 		foreach ($field_names as $field_id) {
@@ -142,6 +143,17 @@ class NF_UXEnhancements_Settings
 				'id' => 'scrollbar'
 			)
 		);
+
+		add_settings_field(
+			'inputmode',
+			'Input mode',
+			array($this, 'inputmode_html'),
+			'nf-ux-enhancements',
+			'nf_ux_enhancements_general',
+			array(
+				'id' => 'inputmode'
+			)
+		);
 	}
 
 	public function browser_save_data_html($args)
@@ -214,6 +226,43 @@ class NF_UXEnhancements_Settings
 			<input type="checkbox" value="1" name="nf_ux_enhancements_admin[<?php echo $args['id'] ?>]"
 				<?php checked($setting, '1') ?> >
 			Show scrollbar in Ninja Forms dashboard</label>
+		<?php
+
+	}
+
+	public function inputmode_html($args)
+	{
+		$options = $this->options;
+		$setting = isset($options[$args['id']]) ? $options[$args['id']] : '0';
+		?>
+		<label>
+			<input type="checkbox" value="1" name="nf_ux_enhancements_admin[<?php echo $args['id'] ?>]"
+				<?php checked($setting, '1') ?> >
+			Allow text fields to use <code>pattern</code> and <code>inputmode</code> HTML attributes</label>
+
+			<p class="description">
+				Adds two new settings to text fields called "Input mode" and
+				"Pattern". This allows you to force
+				on-screen keyboards to open a number pad by default.
+			</p>
+
+			<p class="description">
+				Note: you must override the Ninja Forms template file <code>fields-textbox.html</code>
+				in your theme and add the following code to the list of attributes for this to work.
+			</p>
+
+			<p>
+				<textarea readonly style="height: 3em; width: 100%">
+<# if (data.nf_ux_enhancements_input_mode) { #>
+  inputmode={{{ data.nf_ux_enhancements_input_mode }}}
+<# } #>
+
+<# if (data.nf_ux_enhancements_pattern) { #>
+  pattern={{{ data.nf_ux_enhancements_pattern }}}
+  validate="false"
+<# } #>
+				</textarea>
+			</p>
 		<?php
 
 	}
