@@ -6,7 +6,7 @@
 		return settings.hasOwnProperty(option) ? settings[option] : false;
 	}
 
-	var manipulateFormsView = Backbone.View.extend({
+	var extendFormRender = Backbone.View.extend({
 		initialize: function () {
 			this.listenTo(Backbone.Radio.channel('form'), 'render:view', this.handleFormRender);
 		},
@@ -31,6 +31,7 @@
 		 * https://groups.google.com/a/chromium.org/d/msg/chromium-discuss/Kt1K1PMrtJU/InNIeoIuBgAJ
 		 */
 		initBrowserSave: function (view) {
+			// Button's default type is always 'submit' according to spec.
 			var button = document.createElement('button');
 
 			button.style.display = 'none';
@@ -43,6 +44,14 @@
 			formEl.addEventListener('submit', this.handleSubmit);
 
 			formEl.appendChild(button);
+		},
+
+		/**
+		 * @param {Event} ev Form submit event.
+		 */
+		handleSubmit: function (ev) {
+			// Browser won't save user input without preventDefault()
+			ev.preventDefault();
 		},
 
 		/**
@@ -88,28 +97,25 @@
 					moveClasses(container);
 				}
 			}
-		},
-
-		handleSubmit: function (ev) {
-			// Browser won't save user input without preventDefault()
-			ev.preventDefault();
 		}
 	});
 
-	var stopStartSubmission = Marionette.Object.extend({
-		// Reply to the maybe:submit channel, so we can act before the form disappears.
+	var extendFormSubmit = Marionette.Object.extend({
+		// After form validates, trigger submit event by clicking our
+		// custom submit button.
 		initialize: function () {
 			if (!nfForms.length) return;
 
 			for (var i = 0; i < nfForms.length; i++) {
 				var id = nfForms[i].id;
-				Backbone.Radio.channel('form-' + id).reply('maybe:submit', this.beforeSubmit, this, id);
+				this.listenTo(nfRadio.channel('form-' + id), 'after:submitValidation', this.submitForm);
 			}
 		},
 
 
-		beforeSubmit: function (model) {
-			// Automatically and silently click our button to trigger the <form> submit event.
+		submitForm: function (model) {
+			// Trigger native submit event on the <form>, which is handled by
+			// our event listener.
 			var id = model.id
 			var formEl = document.querySelector('#nf-form-' + id + '-cont');
 
@@ -122,10 +128,10 @@
 	});
 
 	jQuery(document).ready(function ($) {
-		new manipulateFormsView();
+		new extendFormRender();
 
 		if (is_enabled('browserSaveData')) {
-			new stopStartSubmission();
+			new extendFormSubmit();
 		}
 	});
 })();
