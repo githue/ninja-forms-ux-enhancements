@@ -6,7 +6,32 @@
 		return settings.hasOwnProperty(option) ? settings[option] : false;
 	}
 
-	var extendFormRender = Backbone.View.extend({
+	/**
+	 * Removes the user-defined container classes from the original
+	 * container, then adds them to the <nf-field> element.
+	 * @param {HTMLElement} container Element that initially has the classes
+	 * @param {string} containerClass Space-separated string of CSS classes
+	 */
+	function moveClasses(container, containerClass) {
+		var layoutEl = container.parentNode;
+
+		// It's fine to override class attr in this manner because the
+		// templates set the classes in a static order.
+		var allClasses = container.getAttribute('class');
+		var nfClasses = allClasses.replace(containerClass, '');
+
+		container.setAttribute('class', nfClasses);
+
+		if (layoutEl && layoutEl.tagName === 'NF-FIELD') {
+			var classesArray = containerClass.split(' ');
+
+			for (var i = 0; i < classesArray.length; i++) {
+				layoutEl.classList.add(classesArray[i]);
+			}
+		}
+	}
+
+	var FormViewRender = Backbone.View.extend({
 		initialize: function () {
 			this.listenTo(Backbone.Radio.channel('form'), 'render:view', this.handleFormRender);
 		},
@@ -27,7 +52,7 @@
 		 * Adds a hidden button to every Ninja Form and a 'submit' listener
 		 * to each form element. Should work in all modern browsers.
 		 *
-		 * Here's why this works:
+		 * Here's why it's necessary:
 		 * https://groups.google.com/a/chromium.org/d/msg/chromium-discuss/Kt1K1PMrtJU/InNIeoIuBgAJ
 		 */
 		initBrowserSave: function (view) {
@@ -54,30 +79,7 @@
 			ev.preventDefault();
 		},
 
-		/**
-		 * Gets the user-defined container classes and removes them from the
-		 * original container, then applies them to the <nf-field> element.
-		 */
 		initCssLayout: function (view) {
-			function moveClasses(container) {
-				var layoutEl = container.parentNode;
-
-				// It's fine to override class attr in this manner because it's the same
-				// way in which the template sets it.
-				var allClasses = container.getAttribute('class');
-				var nfClasses = allClasses.replace(container_classes, '');
-
-				container.setAttribute('class', nfClasses);
-
-				if (layoutEl && layoutEl.tagName === 'NF-FIELD') {
-					var classesArray = container_classes.split(' ');
-
-					for (var i = 0; i < classesArray.length; i++) {
-						layoutEl.classList.add(classesArray[i]);
-					}
-				}
-			}
-
 			// Loop over all the fields within the current form.
 			var fields = view.options.fieldCollection.models;
 
@@ -86,21 +88,21 @@
 
 				if (!field.hasOwnProperty('attributes')) continue;
 
-				var container_classes = field.attributes.container_class;
+				var hasValue = !!field.attributes.container_class.length;
 
-				if (!container_classes.length) continue;
+				if (!hasValue) continue;
 
 				var selector = 'nf-field-' + field.id + '-container';
 				var container = document.getElementById(selector);
 
 				if (container) {
-					moveClasses(container);
+					moveClasses(container, field.attributes.container_class);
 				}
 			}
 		}
 	});
 
-	var extendFormSubmit = Marionette.Object.extend({
+	var FormObjectSubmit = Marionette.Object.extend({
 		// After form validates, trigger submit event by clicking our
 		// custom submit button.
 		initialize: function () {
@@ -128,10 +130,10 @@
 	});
 
 	jQuery(document).ready(function ($) {
-		new extendFormRender();
+		new FormViewRender();
 
 		if (is_enabled('browserSaveData')) {
-			new extendFormSubmit();
+			new FormObjectSubmit();
 		}
 	});
 })();
